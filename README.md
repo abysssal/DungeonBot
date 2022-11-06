@@ -1,5 +1,5 @@
 # DungeonBot
-DungeonBot is a bot that generate dungeons for your discord server members to crawl around. They can find weapons, enemies, traps, and so much more!
+DungeonBot is a bot that generate dungeons for your discord server members to crawl around. They can find weapons, enemies, traps, and so much more! Your inventory  autosaves so you can focus on getting more loot. It is inspired by Polymars's SokoBot and the mobile game CyberCode Online, with its dungeon system. 
 
 ## How to run
 Sadly, you have to host the bot yourself, but there are tutorials that should teach you how to do so.
