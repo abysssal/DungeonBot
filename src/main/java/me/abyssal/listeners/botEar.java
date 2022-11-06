@@ -13,10 +13,10 @@ public class botEar extends ListenerAdapter {
 
     private final Dotenv config = Dotenv.configure().load();
     private final String guildID = config.get("GUILD_ID");
-    private final String mainChannelID = config.get("MAIN_CHANNEL_ID");
 
     @Override
-    public void onReady(ReadyEvent event) {
-        System.out.println("wow thats crazy");
+    public void onReady(@NotNull ReadyEvent event) {
+        System.out.println("wow thats crazy it works");
+        event.getJDA().getGuildById(guildID).getDefaultChannel().asTextChannel().sendMessage("Dungeons are ready to be crawled through!");
     }
 }
