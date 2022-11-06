@@ -19,7 +19,6 @@ public class commander extends ListenerAdapter {
     @Override
     public void onReady(@NotNull ReadyEvent event) {
         List<CommandData> commandData = new ArrayList<>();
-        commandData.add(Commands.slash("e", "use with caution"));
         commandData.add(Commands.slash("startnewdungeon", "starts a new dungeon with a fixed amount of rooms and set difficulty")
                 .addOptions(new OptionData(OptionType.INTEGER, "rooms", "the number of rooms in the dungeon", true)
                         .setMinValue(1)
@@ -40,11 +39,6 @@ public class commander extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-        /*
-        if (event.getName().equals("e")) {
-                event.reply("https://www.youtube.com/watch?v=dQw4w9WgXcQ \n" + "https://www.youtube.com/watch?v=dPtXaAZHuho \n" + "https://www.youtube.com/watch?v=dQw4w9WgXcQ \n" + "https://www.youtube.com/watch?v=dPtXaAZHuho \n" + "https://www.youtube.com/watch?v=dQw4w9WgXcQ \n" + "https://www.youtube.com/watch?v=dPtXaAZHuho \n" + "https://www.youtube.com/watch?v=dQw4w9WgXcQ \n" + "https://www.youtube.com/watch?v=dPtXaAZHuho \n" + "https://www.youtube.com/watch?v=dQw4w9WgXcQ \n" + "https://www.youtube.com/watch?v=dPtXaAZHuho").queue();
-        }
-        */
         if (event.getName().equals("startnewdungeon")) {
             event.deferReply();
 
@@ -54,9 +48,10 @@ public class commander extends ListenerAdapter {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("Coming soon!");
             embed.setDescription("This feature has not been implemented yet, sorry! \n Here is some data collected: \n" + "Rooms: " + rooms + "\n Difficulty Level: " + difficulty);
+            embed.setFooter("Made by @Abyssal#5704");
             embed.setColor(Color.red);
 
-            event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            event.getHook().sendMessageEmbeds(embed.build()).queue();
         }
 
         if (event.getName().equals("info")) {
@@ -65,7 +60,7 @@ public class commander extends ListenerAdapter {
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("DungeonBot Information");
             embed.setAuthor("Made by @Abyssal#5704");
-            embed.setDescription("DungeonBot is a discord bot where you can create randomly generated dungeons. You can battle monsters, get items and flex on your friends with those items you earned from the dungeons. \n \n You can find the source code ");
+            embed.setDescription("DungeonBot is a discord bot where you can create randomly generated dungeons. You can battle monsters, get items and flex on your friends with those items you earned from the dungeons. \n \n You can find the source code here: https://github.com/abysssal/DungeonBot");
             embed.setColor(Color.blue);
 
             event.getHook().sendMessageEmbeds(embed.build()).queue();
