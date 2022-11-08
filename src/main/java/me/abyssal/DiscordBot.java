@@ -25,7 +25,7 @@ public class DiscordBot {
         
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
         builder.setStatus(OnlineStatus.IDLE);
-        builder.setActivity(Activity.watching("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+        builder.setActivity(Activity.watching("nerds fail at easy mode"));
         shardManager = builder.build();
 
         shardManager.addEventListener(new botEar(), new commander());

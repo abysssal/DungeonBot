@@ -16,7 +16,6 @@ public class botEar extends ListenerAdapter {
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-        System.out.println("wow thats crazy it works");
-        event.getJDA().getGuildById(guildID).getDefaultChannel().asTextChannel().sendMessage("Dungeons are ready to be crawled through!");
+        System.out.println("dungeons can be crawled through");
     }
 }
