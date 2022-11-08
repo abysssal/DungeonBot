@@ -18,14 +18,16 @@ import java.util.List;
 
 public class commander extends ListenerAdapter {
 
+    public int width;
+    public int height;
     public int rooms;
     public String difficulty;
 
     public String levelToMake;
 
     public String player = ":monkey:";
-    public String wall = ":red_square";
-    public String blank = ":black_square:";
+    public String wall = ":red_square:";
+    public String blank = ":black_large_square:";
     public String spikeTrap = ":large_orange_diamond:";
     public String slownessTrap = ":spider_web:";
 
@@ -35,6 +37,14 @@ public class commander extends ListenerAdapter {
         commandData.add(Commands.slash("startnewdungeon", "starts a new dungeon with a fixed amount of rooms and set difficulty")
                 .addOptions(new OptionData(OptionType.INTEGER, "rooms", "the number of rooms in the dungeon", true)
                         .setMinValue(1)
+                        .setMaxValue(15)
+                )
+                .addOptions(new OptionData(OptionType.INTEGER, "width", "how wide the blank space in the rooms will be", true)
+                        .setMinValue(5)
+                        .setMaxValue(15)
+                )
+                .addOptions(new OptionData(OptionType.INTEGER, "height", "how tall the blank space in the rooms will be", true)
+                        .setMinValue(5)
                         .setMaxValue(15)
                 )
                 .addOptions(new OptionData(OptionType.STRING, "difficulty", "how difficult should the dungeon be, harder gives best loot", true)
@@ -56,12 +66,14 @@ public class commander extends ListenerAdapter {
             event.deferReply().queue();
 
             rooms = event.getOption("rooms").getAsInt();
+            width = event.getOption("width").getAsInt();
+            height = event.getOption("height").getAsInt();
             difficulty = event.getOption("difficulty").getAsString();
 
             EmbedBuilder embed = new EmbedBuilder();
             embed.setTitle("Confirm Dungeon Creation");
             embed.setAuthor("Are you sure you want to create a dungeon with these settings?");
-            embed.setDescription("Rooms: " + rooms + "\n Difficulty Level: " + difficulty);
+            embed.setDescription("Rooms: " + rooms + "\n Difficulty Level: " + difficulty + "\n Width: " + width + "\n Height: " + height);
             embed.setFooter("Made by @Abyssal#5704");
             embed.setColor(Color.red);
 
@@ -90,7 +102,7 @@ public class commander extends ListenerAdapter {
     public void onButtonInteraction(ButtonInteractionEvent event) {
         if (event.getComponentId().equals("yes")) {
             System.out.println("user has replied with yes for creating a new dungeon");
-            createLevel(difficulty);
+            createLevel(difficulty, width, height);
 
             EmbedBuilder embed = new EmbedBuilder();
 
@@ -105,30 +117,29 @@ public class commander extends ListenerAdapter {
         }
     }
 
-    public void createLevel(String diff) {
+    public void createLevel(String diff, int width, int height) {
         int row = 0;
         int column = 0;
 
-        int iteration = 0;
+        width += 2;
+        height += 2;
 
-        int width = 10;
-        int height = 10;
+        width++;
+
+        int iteration = 0;
 
         String level = "";
 
-        while (iteration < 100) {
-            level = level + " " + blank + " ";
+        while (iteration < width * height) {
             column++;
             if (column == width) {
                 row++;
                 column = 0;
                 level = level + "\n";
-            }
-
-            if (row == height && column == width) {
-                System.out.println("finished early");
-                levelToMake = level;
-                break;
+            } else if  (row == 0 || row == width) {
+                level = level + wall;
+            } else {
+                level = level + blank;
             }
             iteration++;
             System.out.println("creation iteration completed currently on iteration " + iteration + ",and we are on column " + column + " and on row " + row);
