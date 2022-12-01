@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,9 @@ public class commander extends ListenerAdapter {
 
     public int width;
     public int height;
+
     public int rooms;
     public String difficulty;
-
     public String levelToMake;
 
     public String player = ":monkey:";
@@ -40,12 +41,12 @@ public class commander extends ListenerAdapter {
                         .setMaxValue(15)
                 )
                 .addOptions(new OptionData(OptionType.INTEGER, "width", "how wide the blank space in the rooms will be", true)
-                        .setMinValue(5)
-                        .setMaxValue(15)
+                        .setMinValue(10)
+                        .setMaxValue(30)
                 )
                 .addOptions(new OptionData(OptionType.INTEGER, "height", "how tall the blank space in the rooms will be", true)
-                        .setMinValue(5)
-                        .setMaxValue(15)
+                        .setMinValue(10)
+                        .setMaxValue(30)
                 )
                 .addOptions(new OptionData(OptionType.STRING, "difficulty", "how difficult should the dungeon be, harder gives best loot", true)
                         .addChoice("very easy", "veryEasy")
@@ -101,6 +102,7 @@ public class commander extends ListenerAdapter {
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
         if (event.getComponentId().equals("yes")) {
+            event.deferReply().queue();
             System.out.println("user has replied with yes for creating a new dungeon");
             createLevel(difficulty, width, height);
 
@@ -110,7 +112,15 @@ public class commander extends ListenerAdapter {
             embed.setColor(Color.black);
             embed.setDescription(getLevelToMake());
 
-            event.replyEmbeds(embed.build()).queue();
+            event.getHook().sendMessageEmbeds(embed.build())
+                    .addActionRow(
+                            Button.primary("moveRight", "Move Right"),
+                            Button.primary("moveDown", "Move Down"),
+                            Button.primary("moveUp", "Move Up"),
+                            Button.primary("moveLeft", "Move Left"),
+                            Button.danger("abortDungeon", "Abort Dungeon")
+                    )
+                    .queue();
         } else if (event.getComponentId().equals("no")) {
             System.out.println("user has decided to restart");
             event.reply("Mistakes happen, but you can try again").setEphemeral(true).queue();
@@ -118,36 +128,66 @@ public class commander extends ListenerAdapter {
     }
 
     public void createLevel(String diff, int width, int height) {
-        int row = 0;
-        int column = 0;
+        int enemies;
+        int crates;
+        int spikeTraps;
+        int slownessTraps;
 
-        width += 2;
-        height += 2;
+        int roomArea = width * height;
 
-        width++;
+        int xCoordinate;
+        int yCoordinate;
 
-        int iteration = 0;
+        String[][] level;
+        level = new String[width][height];
 
-        String level = "";
-
-        while (iteration < width * height) {
-            column++;
-            if (column == width) {
-                row++;
-                column = 0;
-                level = level + "\n";
-            } else if  (row == 0 || row == width) {
-                level = level + wall;
-            } else {
-                level = level + blank;
-            }
-            iteration++;
-            System.out.println("creation iteration completed currently on iteration " + iteration + ",and we are on column " + column + " and on row " + row);
+        if (diff == "veryEasy") {
+            enemies = ThreadLocalRandom.current().nextInt(1, 3);
+            crates = ThreadLocalRandom.current().nextInt(0, 1);
+            spikeTraps = 0;
+            slownessTraps = ThreadLocalRandom.current().nextInt(0, 1);
+        } else if (diff == "easy") {
+            enemies = ThreadLocalRandom.current().nextInt(2, 4);
+            crates = ThreadLocalRandom.current().nextInt(1, 2);
+            spikeTraps = ThreadLocalRandom.current().nextInt(0, 1);
+            slownessTraps = ThreadLocalRandom.current().nextInt(0, 2);
+        } else if (diff == "medium") {
+            enemies = ThreadLocalRandom.current().nextInt(3, 6);
+            crates = ThreadLocalRandom.current().nextInt(2, 3);
+            spikeTraps = ThreadLocalRandom.current().nextInt(1, 2);
+            slownessTraps = ThreadLocalRandom.current().nextInt(1, 3);
+        } else if (diff == "hard") {
+            enemies = ThreadLocalRandom.current().nextInt(5, 8);
+            crates = ThreadLocalRandom.current().nextInt(3, 4);
+            spikeTraps = ThreadLocalRandom.current().nextInt(2, 3);
+            slownessTraps = ThreadLocalRandom.current().nextInt(2, 4);
+        } else if (diff == "veryHard") {
+            enemies = ThreadLocalRandom.current().nextInt(7, 11);
+            crates = ThreadLocalRandom.current().nextInt(4, 5);
+            spikeTraps = ThreadLocalRandom.current().nextInt(3, 4);
+            slownessTraps = ThreadLocalRandom.current().nextInt(3, 5);
+        } else if (diff == "impossible") {
+            enemies = ThreadLocalRandom.current().nextInt(9, 14);
+            crates = ThreadLocalRandom.current().nextInt(5, 6);
+            spikeTraps = ThreadLocalRandom.current().nextInt(4, 5);
+            slownessTraps = ThreadLocalRandom.current().nextInt(4, 6);
         }
 
-        levelToMake = level;
-        System.out.println(levelToMake);
-        System.out.println("finished");
+        for (int i = 0; i < level.length; i++) {
+            if (xCoordinate == level[0][yCoordinate]) {
+
+            }
+            for (int j = 0; j < level[i].length; j++) {
+
+            }
+        }
+
+        setLevelToMake(level.toString());
+    }
+
+    public String setLevelToMake(String whatToSet) {
+        levelToMake = levelToMake + " " + whatToSet;
+        return levelToMake;
     }
 
     public String getLevelToMake() {
