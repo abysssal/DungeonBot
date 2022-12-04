@@ -18,6 +18,6 @@ To implement, do the following:
 8. The bot should run, as far as I know, but if not, submit an issue on Github
 
 ## Commands
-`/info` - gives a basic descriptions on the bot
+`/info` - gives a basic description on the bot
 
 `/createnewdungeon [rooms] [difficulty]` - Creates a new dungeon for you to go through, with the selected amount of rooms and difficulty. The harder the difficulty, the more quantity and quality of the loot, though the harder the monsters are. You can only achieve loot if you make it through the dungeon without dying.
