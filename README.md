@@ -11,7 +11,7 @@ To implement, do the following:
 1. Download the source code
 2. Make a new developer application at https://discord.com/developers/applications/
 3. Make it a bot and invite it to your server
-4. Make a .env file and copy and paste the contents from 
+4. Make a .env file and copy and paste the contents from .env.example
 5. In the TOKEN field, put the token of the discord bot in your application after you've made it, you may need to reset it
 6. In the GUILD_ID field, right click the discord server the bot is in and place it there, this may require you to turn Developer Mode on
 7. Run the DiscordBot.java file
